@@ -70,7 +70,7 @@ above. The report must meet the following requirements:
 - Focus on directly addressing the chosen topic.
 - Ensure a well-structured and in-depth presentation, incorporating relevant facts and figures where available.
 - Present data and findings in an intuitive manner, utilizing feature comparative tables, if applicable.
-- The report should have a minimum word count of 2,000 and be formatted with Markdown syntax following APA style guidelines.
+- The report should have a minimum word count of 200 and be formatted with Markdown syntax following APA style guidelines.
 - Include all source URLs in APA format at the end of the report.
 """
 
@@ -111,6 +111,7 @@ class CollectLinks(Action):
         """
         system_text = system_text if system_text else RESEARCH_TOPIC_SYSTEM.format(topic=topic)
         keywords = await self._aask(SEARCH_TOPIC_PROMPT, [system_text])
+        print("Raw keywords output:", keywords)
         try:
             keywords = OutputParser.extract_struct(keywords, list)
             keywords = TypeAdapter(list[str]).validate_python(keywords)
@@ -146,6 +147,8 @@ class CollectLinks(Action):
         ret = {}
         for query in queries:
             ret[query] = await self._search_and_rank_urls(topic, query, url_per_query)
+        print(type(ret))
+        print("最终返回的链接字典:", ret)  # 调试输出
         return ret
 
     async def _search_and_rank_urls(self, topic: str, query: str, num_results: int = 4) -> list[str]:
@@ -170,9 +173,15 @@ class CollectLinks(Action):
         try:
             indices = OutputParser.extract_struct(indices, list)
             assert all(isinstance(i, int) for i in indices)
+            indices = [i for i in indices if isinstance(i, int) and 0 <= i < len(results)]
+            # 确保 indices 长度不会超过 results
+            if len(indices) > len(results):
+                indices = indices[:len(results)]
         except Exception as e:
             logger.exception(f"fail to rank results for {e}")
-            indices = list(range(max_results))
+            indices = list(range(len(results)))
+        print("Indices:", indices)
+        print("Results length:", len(results))
         results = [results[i] for i in indices]
         if self.rank_func:
             results = self.rank_func(results)

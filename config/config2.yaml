@@ -1,8 +1,34 @@
 # Full Example: https://github.com/geekan/MetaGPT/blob/main/config/config2.example.yaml
 # Reflected Code: https://github.com/geekan/MetaGPT/blob/main/metagpt/config2.py
 # Config Docs: https://docs.deepwisdom.ai/main/en/guide/get_started/configuration.html
+#llm:
+#  api_type: "moonshot"  # or azure / ollama / groq etc.
+#  base_url: "https://api.moonshot.cn/v1"  # or forward url / other llm url
+#  api_key: "sk-i2QXTFgoUiT9S45vTEf33C3YaOuYV0jGWv4TDtolXWAH0m4D"
+#  model: 'moonshot-v1-8k'
+
+#llm:
+#  api_type: "openai"  # or azure / ollama / groq etc.
+#  base_url: "https://api.openai.com/v1/chat/completions"
+#  api_key: "hk-i82zz41000052195ab50c49fec33c378dbb0cec32a17f92f"
+#  model: "gpt-3.5-turbo"  # or gpt-3.5-turbo
+#  proxy: "https://api.ddaiai.com/v1/chat/completions"  # for LLM API requests
+#  # timeout: 600 # Optional. If set to 0, default value is 300.
+#  # Details: https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/
+##  pricing_plan: "" # Optional. Use for Azure LLM when its model name is not the same as OpenAI's
+
 llm:
-  api_type: "openai"  # or azure / ollama / groq etc.
-  model: "gpt-4-turbo"  # or gpt-3.5-turbo
-  base_url: "https://api.openai.com/v1"  # or forward url / other llm url
-  api_key: "YOUR_API_KEY"
+  api_type: 'zhipuai'
+#  api_key: '91cd07dc14064e98a425cda376696eb3.5GbNHBEr6u0g0nIH'
+  api_key: '48744c61f4ca4b4d9f51c86e89ba25af.YsBuFnyrcnURrJqL'
+  model: 'GLM-4'
+
+  search:
+    api_type: 'serpapi' # serpapi/google/serper/ddg
+    api_key: 'c230866334b218a6155769df8d1428764fa71c577784460c50564347d094fb9d'
+    # cse_id: 'YOUR_CSE_ID' # only for google
+    params:
+      engine: 'google' # google/bing/yahoo/baidu/yandex, check https://serpapi.com/bing-search-api for more details
+      google_domain: 'google.com'
+      gl: us
+      hl: en
